@@ -13,18 +13,6 @@ visual experiences.
 ### CODE
 `React` · `JavaScript` · `D3.js` · `Canvas / WebGL` · `Creative Coding`
 
----
-
-### SELECTED WORK
-
-<p>
-  <img src="https://via.placeholder.com/160x120?text=Project+1" width="160" />
-  <img src="https://via.placeholder.com/160x120?text=Project+2" width="160" />
-  <img src="https://via.placeholder.com/160x120?text=Project+3" width="160" />
-  <img src="https://via.placeholder.com/160x120?text=Project+4" width="160" />
-</p>
-
----
 
 ### PORTFOLIO
 
