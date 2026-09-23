@@ -2,7 +2,7 @@
 ### Visual Designer × Creative Technologist
 
 I work across visual design, information design, data visualization, and
-creative coding — turning complex information into clear, interactive
+creative coding, turning complex information into clear, interactive
 visual experiences.
 
 ---
