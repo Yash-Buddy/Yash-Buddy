@@ -26,13 +26,12 @@ visual experiences.
 
 ---
 
-### EXPERIMENTS
+### PORTFOLIO
 
 - → [Visual Instrument Portfolio](https://visual-instrument-portfolio.vercel.app) — a living particle field that responds to pointer movement and scroll
-- → Pixel Cursor Trail — a grid-quantized, theme-aware cursor interaction built with Canvas
 
 ---
 
 ### FIND OUT MORE
 
-[Portfolio](https://visual-instrument-portfolio.vercel.app) · [LinkedIn]( your-linkedin-url-here ) · [Email]( mailto:your-email-here )
+[Portfolio](https://visual-instrument-portfolio.vercel.app) · [LinkedIn]( linkedin.com/in/yash-726208145) · [Email]( mailto:yashdesign08@outlook.com )
