@@ -1,4 +1,4 @@
-# YASH YADAV 🪖
+# YASH. 🪖
 ### Visual Designer × Creative Technologist
 
 I work across visual design, information design, data visualization, and
