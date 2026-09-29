@@ -7,7 +7,7 @@ visual experiences.
 
 ---
 
-<img src="assets/airport-header.svg" alt="Departures board: Design, React, Data Visualization, Interactive Newsletters, Creative Coding" width="100%">
+<img src="airport-header.svg" alt="Departures board: Design, React, Data Visualization, Interactive Newsletters, Creative Coding" width="100%">
 
 ### DESIGN
 `Presentation Design` · `Information Design` · `Data Visualization` · `UI / UX`
