@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Newsletter Lab: Issue 02</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--y:#fbe04a;--b:#a8e8f8;--o:#f47b20;--d:#26301a;--g:#4cb96a;--bg:#f2f0e8;--ink:#26301a;--nav:#26301a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171a12;--ink:#f2f0e8;--nav:#f2f0e8}}
+:root[data-theme="dark"]{--bg:#171a12;--ink:#f2f0e8;--nav:#f2f0e8}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter Tight',Helvetica,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden}
+.deck{position:relative;width:min(96vw,calc((100dvh - 84px)*16/9));aspect-ratio:16/9;container-type:inline-size;border-radius:1.6cqw;overflow:hidden;box-shadow:0 2cqw 5cqw #0004;background:var(--d)}
+.prog{position:absolute;left:0;top:0;height:.6cqw;background:var(--d);z-index:5;transition:width .4s}
+.s{position:absolute;inset:0;padding:5cqw 6cqw;display:flex;flex-direction:column;justify-content:center;color:var(--d);opacity:0;visibility:hidden;transform:translateX(3cqw);transition:opacity .45s,transform .45s,visibility 0s .45s;overflow:hidden}
+.s.on{opacity:1;visibility:visible;transform:none;transition:opacity .45s,transform .45s}
+.s.past{transform:translateX(-3cqw)}
+.y{background:var(--y)}.b{background:var(--b)}.o{background:var(--o)}.d{background:var(--d);color:#fff}.w{background:#fff}.g{background:var(--g)}
+.t{font-size:6.4cqw;line-height:1;letter-spacing:-.05em;font-weight:400;margin:0}.t b{font-weight:800}
+.h2{font-size:4.4cqw}
+.or{color:var(--o)}.gr{color:var(--g)}
+.sm{font-size:1.9cqw;line-height:1.35;font-weight:600;opacity:.85;margin:0}
+.big{font-size:22cqw;line-height:.85;letter-spacing:-.07em;font-weight:500}
+.cap{position:absolute;left:6cqw;bottom:4.5cqw;font-size:1.7cqw;font-weight:800;z-index:3}
+.row{flex-direction:row;align-items:center;justify-content:space-between;gap:4cqw}
+.split:after{content:"";position:absolute;right:-8%;top:-12%;bottom:-12%;width:46%;border-radius:50%;background:var(--d)}
+.split>*{position:relative;z-index:2}
+.split .orb{position:absolute;right:9cqw;top:50%;transform:translateY(-50%);z-index:3;width:20cqw;text-align:center;color:var(--y);font-size:2cqw;font-weight:600;line-height:1.3}
+.split .orb b{display:block;font-size:11cqw;letter-spacing:-.06em;font-weight:800;line-height:1}
+.tip{position:absolute;z-index:9;pointer-events:none;background:var(--d);color:#fff;font-size:1.6cqw;font-weight:600;padding:.7cqw 1.2cqw;border-radius:.8cqw;opacity:0;transform:translate(-50%,-130%);transition:opacity .12s;white-space:nowrap;box-shadow:0 .6cqw 1.6cqw #0005}
+.tip.on{opacity:1}
+[data-tip]{cursor:pointer}
+/* bars */
+.bars{display:flex;align-items:flex-end;gap:2cqw;height:46cqh;margin-top:3cqw}
+.bars .bw{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end}
+.bar{border-radius:1.2cqw 1.2cqw 0 0;height:0;transition:height .9s cubic-bezier(.2,.8,.2,1),filter .2s,transform .2s;padding:1.4cqw 1.6cqw;font-size:4.4cqw;letter-spacing:-.05em;font-weight:500;display:flex;align-items:flex-start;color:var(--d)}
+.bar:hover{filter:brightness(1.08);transform:translateY(-.6cqw)}
+.bl{font-size:1.6cqw;font-weight:800;margin-top:.8cqw;text-align:center}
+.lgd{display:flex;gap:1.6cqw;margin-top:2cqw;font-size:1.7cqw;font-weight:600}
+.pill{border:.2cqw solid var(--d);border-radius:9cqw;padding:.6cqw 1.6cqw;background:transparent;font:inherit;color:inherit;cursor:pointer;transition:background .2s,color .2s}
+.pill.on{background:var(--d);color:#fff}
+/* slider */
+.rng{width:100%;accent-color:var(--d);margin:1.6cqw 0 .6cqw;height:2cqw}
+.cmp{display:grid;gap:1cqw;margin-top:2cqw}
+.cmp div{border-radius:1cqw;padding:1.2cqw 1.8cqw;display:flex;justify-content:space-between;font-size:2cqw;font-weight:600}
+.cmp b{font-size:3cqw;letter-spacing:-.04em;font-weight:800}
+/* boxes */
+.bx{display:grid;grid-template-columns:repeat(3,1fr);gap:2cqw;margin-top:3.5cqw}
+.bx button{all:unset;box-sizing:border-box;cursor:pointer;background:var(--b);border-radius:1.6cqw;padding:2.4cqw;font-size:3.4cqw;line-height:1.05;font-weight:500;letter-spacing:-.03em;min-height:19cqw;transition:transform .25s,background .25s,color .25s}
+.bx button:hover{transform:translateY(-.6cqw)}
+.bx button.on{background:var(--d);color:#fff}
+.bx button:focus-visible,.pill:focus-visible,.nv:focus-visible,.dot:focus-visible{outline:.3cqw solid var(--o);outline-offset:.3cqw}
+.bx small{display:block;font-size:1.7cqw;font-weight:600;margin-top:1.2cqw;opacity:0;max-height:0;transition:opacity .3s,max-height .3s;letter-spacing:0}
+.bx button.on small{opacity:.85;max-height:12cqw}
+/* steps */
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqw;margin-top:4cqw}
+.st button{all:unset;cursor:pointer;box-sizing:border-box;border-top:.5cqw solid #ffffff44;padding-top:1.6cqw;font-size:2.2cqw;font-weight:600;line-height:1.15;transition:border-color .25s,opacity .25s;opacity:.55}
+.st button b{display:block;font-size:5cqw;letter-spacing:-.04em;font-weight:800;margin-bottom:.6cqw}
+.st button.on,.st button:hover{opacity:1;border-color:var(--c)}
+.st button b{color:var(--c)}
+.sd{margin-top:3cqw;font-size:2cqw;font-weight:500;min-height:6cqw;max-width:60%;opacity:.85}
+/* table */
+.tb{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:.8cqw;font-weight:800;text-align:center;align-items:center;margin-top:2.6cqw}
+.tb i{font-style:normal;padding:1.1cqw 0;background:var(--b);font-size:2.4cqw;border-radius:.8cqw;transition:filter .2s,transform .2s}
+.tb i.u{background:var(--y)}
+.tb i.hd{font-size:1.8cqw;letter-spacing:.02em;padding:1.4cqw 0}
+.tb span{text-align:left;font-weight:500;font-size:2.1cqw}
+.tb .hl{filter:brightness(.92);transform:scale(1.04)}
+/* metrics */
+.nm{display:grid;gap:1.2cqw;width:56%}
+.nm button{all:unset;cursor:pointer;box-sizing:border-box;border-radius:1.6cqw;padding:1.6cqw 3cqw;display:flex;justify-content:space-between;align-items:center;font-size:2.4cqw;font-weight:500;transition:transform .25s}
+.nm button:hover{transform:translateX(-1cqw)}
+.nm b{font-size:6.4cqw;letter-spacing:-.05em;font-weight:500}
+/* chart */
+.ch{width:100%;height:auto;display:block;margin-top:1.6cqw;overflow:visible}
+.ch text{font:600 11px 'Inter Tight',sans-serif;fill:currentColor;opacity:.7}
+.ch .pt{transform-box:fill-box;transform-origin:center;transition:transform .15s}
+.ch .pt:hover{transform:scale(1.5)}
+/* donut */
+.dwrap{display:flex;align-items:center;gap:6cqw;margin-top:1cqw;justify-content:center}
+.dsvg{width:31cqw;height:31cqw;transform:rotate(-90deg);flex:none}
+.dsvg circle{fill:none;stroke-width:7;transition:stroke-width .2s,opacity .2s;cursor:pointer}
+.dsvg circle:hover,.dsvg circle.on{stroke-width:9}
+.dsvg.dim circle:not(.on){opacity:.35}
+.dc{position:absolute;text-align:center;width:31cqw;font-size:1.8cqw;font-weight:700;pointer-events:none}
+.dc b{display:block;font-size:6.4cqw;letter-spacing:-.05em;font-weight:800;line-height:1}
+.dl{display:grid;gap:1cqw}
+.dl button{all:unset;cursor:pointer;display:flex;align-items:center;gap:1.4cqw;font-size:2.4cqw;font-weight:600;padding:.6cqw 1.6cqw;border-radius:9cqw;transition:background .2s}
+.dl button:hover,.dl button.on{background:#26301a1f}
+.dl i{width:2cqw;height:2cqw;border-radius:50%;background:var(--c)}
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:3cqw;margin-top:8cqw;position:relative}
+.tl:before{content:"";position:absolute;left:0;right:0;top:1.3cqw;height:.5cqw;background:var(--d)}
+.tl button{all:unset;cursor:pointer;position:relative;padding-top:5.5cqw;font-size:2.2cqw;font-weight:600;line-height:1.2}
+.tl button:before{content:"";position:absolute;top:0;left:0;width:3cqw;height:3cqw;border-radius:50%;background:#fff;border:.6cqw solid var(--o);transition:background .25s,transform .25s}
+.tl button.on:before,.tl button:hover:before{background:var(--o);transform:scale(1.2)}
+.tl b{position:absolute;top:-5.6cqw;left:0;font-size:4cqw;letter-spacing:-.04em;color:var(--o)}
+.tl small{display:block;margin-top:.8cqw;font-size:1.7cqw;font-weight:500;opacity:0;transition:opacity .3s}
+.tl button.on small{opacity:.8}
+/* alignment system: left-aligned, headline anchored top, fixed rhythm */
+.s{text-align:left;padding:5.5cqw 6cqw 7cqw}
+.s:not(.row):not(.split){justify-content:flex-start}
+.s .t{text-align:left!important;text-wrap:balance;max-width:62%}
+.s .t+.sm{margin-top:1.2cqw!important;max-width:62%}
+.s .t+*:not(.sm){margin-top:3.5cqw!important}
+.s .t+.sm+*{margin-top:3cqw!important}
+.bars{height:22cqw!important}
+.bx,.tb,.st,.tl,.dwrap,.bars{width:100%}
+.dwrap{justify-content:flex-start;gap:8cqw;margin-top:1cqw!important}
+.tb{margin-top:3cqw!important}
+.bx button,.st button,.tl button{text-align:left}
+.tl{margin-top:9cqw!important}
+.row .t{max-width:40%!important}
+.ft{position:absolute;left:6cqw;right:6cqw;bottom:2.4cqw;display:flex;justify-content:space-between;font-size:1.4cqw;font-weight:600;opacity:.55}
+.ic{width:4.6cqw;height:4.6cqw;display:block;margin-bottom:1.4cqw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.split .orb{width:27cqw;right:6.5cqw}
+.split .orb svg,.ph svg{width:100%;height:auto;display:block}
+.ph{position:absolute;right:7cqw;top:50%;transform:translateY(-50%);width:17cqw;filter:drop-shadow(0 1.4cqw 2cqw #0004)}
+.bk{font-size:13px;font-weight:600;color:inherit;text-decoration:none;opacity:.7;margin-left:6px;white-space:nowrap}.bk:hover{opacity:1;text-decoration:underline}
+@media(max-width:700px){.bk{display:none}}
+/* fixes */
+.s .t+.tl{margin-top:14cqw!important}
+.bx button,.st button,.tl button{display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start}
+.tl{align-items:start}
+.dl{min-width:28cqw}
+.dl button{width:100%}
+.dl em{font-style:normal;margin-left:auto;padding-left:4cqw;font-weight:800}
+/* alignment pass 2 */
+.split>.cap{position:absolute;left:6cqw;bottom:4.5cqw}
+.bars{height:26cqw!important}
+.bar{min-height:9.5cqw}
+.bx button{min-height:24cqw}
+.s.w.row{align-items:flex-start}
+.s.w.row .t{font-size:4.4cqw!important;max-width:36%!important}
+.s.w.row .nm{margin-top:1cqw}
+.s.b .t{max-width:66%}
+/* nav */
+.nav{display:flex;align-items:center;gap:14px;color:var(--nav)}
+.nv{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center;font-size:18px;font-weight:600;transition:background .2s,color .2s}
+.nv:hover:not(:disabled){background:var(--nav);color:var(--bg)}
+.nv:disabled{opacity:.3;cursor:default}
+.dots{display:flex;gap:7px}
+.dot{all:unset;cursor:pointer;width:9px;height:9px;border-radius:50%;background:currentColor;opacity:.25;transition:opacity .2s,transform .2s}
+.dot.on{opacity:1;transform:scale(1.35)}
+.ct{font-size:13px;font-weight:600;min-width:46px;text-align:center;opacity:.7}
+.hint{font-size:12px;opacity:.5;margin-top:-6px}
+@media(max-width:700px){.dots{display:none}.hint{display:none}}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck"><div class="prog" id="prog"></div><div class="tip" id="tip"></div></div>
+<div class="nav"><button class="nv" id="pv" aria-label="Previous slide">&larr;</button><div class="dots" id="dots"></div><span class="ct" id="ct"></span><button class="nv" id="nx" aria-label="Next slide">&rarr;</button><a class="bk" href="index.html">&larr; All issues</a></div>
+<div class="hint">Use the arrow keys or swipe. Hover and click the charts.</div>
+
+<script>
+const deck=document.getElementById('deck'),tip=document.getElementById('tip');
+const IMG={
+env:`<svg viewBox="0 0 200 170" aria-hidden="true"><rect x="38" y="6" width="124" height="96" rx="8" fill="#fff"/><rect x="50" y="18" width="50" height="8" rx="4" fill="#26301a"/><rect x="50" y="76" width="16" height="18" fill="#a8e8f8"/><rect x="72" y="60" width="16" height="34" fill="#4cb96a"/><rect x="94" y="46" width="16" height="48" fill="#f47b20"/><rect x="116" y="34" width="34" height="8" rx="4" fill="#fbe04a"/><rect x="116" y="50" width="34" height="8" rx="4" fill="#a8e8f8"/><rect x="14" y="70" width="172" height="92" rx="10" fill="#fbe04a"/><path d="M14 80 L100 132 L186 80" fill="none" stroke="#26301a" stroke-width="5" stroke-linejoin="round"/><circle cx="168" cy="72" r="14" fill="#f47b20"/><path d="M162 72 l4 4 l8 -9" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+phone:`<svg viewBox="0 0 120 230" aria-hidden="true"><rect x="2" y="2" width="116" height="226" rx="18" fill="#26301a"/><rect x="9" y="12" width="102" height="206" rx="12" fill="#fff"/><rect x="9" y="12" width="102" height="34" rx="12" fill="#fbe04a"/><rect x="9" y="30" width="102" height="16" fill="#fbe04a"/><rect x="18" y="22" width="44" height="7" rx="3.5" fill="#26301a"/><text x="18" y="86" font-family="Inter Tight,sans-serif" font-weight="800" font-size="30" letter-spacing="-2" fill="#f47b20">53%</text><rect x="18" y="94" width="70" height="5" rx="2.5" fill="#26301a" opacity=".5"/><rect x="18" y="126" width="18" height="30" rx="3" fill="#a8e8f8"/><rect x="42" y="112" width="18" height="44" rx="3" fill="#4cb96a"/><rect x="66" y="100" width="18" height="56" rx="3" fill="#f47b20"/><rect x="90" y="120" width="14" height="36" rx="3" fill="#fbe04a"/><rect x="18" y="170" width="84" height="7" rx="3.5" fill="#26301a" opacity=".15"/><rect x="18" y="184" width="60" height="7" rx="3.5" fill="#26301a" opacity=".15"/><rect x="18" y="198" width="40" height="12" rx="6" fill="#26301a"/></svg>`};
+const S=[];
+/* 1 */ S.push(['y split',`<div class="cap">Newsletter Lab &middot; Issue 02</div><p class="t" style="font-size:7.4cqw">Solving the<br><b class="or">boring newsletter</b></p><p class="sm" style="margin-top:3cqw;max-width:34%">Newsletters people explore, not skip.</p><div class="orb">${IMG.env}</div>`]);
+/* 2 */ S.push(['b',`<p class="t h2">Open rate of <b>journey&#8209;based</b> emails</p><p class="sm" style="margin-top:1cqw">Against 12.2% for broadcast emails. Hover the bars.</p><div class="ph">${IMG.phone}</div><div class="bars" style="gap:4cqw;width:52%;padding:0"><div class="bw"><div class="bar" data-h="100" style="background:var(--d);color:#fff" data-tip="Journey-based: 53%"><span data-n="53" data-s="%">53%</span></div><div class="bl">JOURNEY</div></div><div class="bw"><div class="bar" data-h="23" style="background:#fff" data-tip="Broadcast: 12.2%"><span style="font-size:3cqw">12.2%</span></div><div class="bl">BROADCAST</div></div></div>`]);
+/* 3 */ S.push(['o row',`<div style="flex:1"><div class="big" style="font-size:24cqw" data-n="4.35" data-d="2" data-s="x">4.35x</div><p class="sm" style="max-width:80%;margin-top:2cqw">more opens than broadcast emails. <b>Personal beats generic.</b></p></div><div style="flex:1"><p class="sm"><b>Try your list size</b></p><input class="rng" id="rg" type="range" min="1000" max="100000" step="1000" value="25000" aria-label="List size"><div class="cmp"><div style="background:#fff">List size<b id="c0">25,000</b></div><div style="background:#fff">Broadcast opens<b id="c1"></b></div><div style="background:var(--d);color:#fff">Journey opens<b id="c2"></b></div></div></div>`]);
+/* 4 */ S.push(['y',`<p class="t h2">Static is your <b class="or">biggest</b> leak</p><p class="sm" style="margin-top:1cqw">Share of readers still engaged, by week. Hover the points.</p><svg class="ch" id="c4" viewBox="0 0 600 170" style="color:var(--d)"></svg><div class="lgd"><span>&#9679; Journey</span><span style="opacity:.6">&#9679; Static</span></div>`]);
+/* 5 */ S.push(['w',`<p class="t h2" style="text-align:center">Hidden costs of <b>static emails</b></p><div class="bx" id="bx"><button class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h13"/></svg>Skimmed<small>Readers scroll past flat charts.</small></button><button><svg class="ic" viewBox="0 0 24 24"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg>Skipped<small>No reason to click or explore.</small></button><button><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/><path d="M12 8v4l3 2"/></svg>Forgotten<small>Nothing to remember or share.</small></button></div>`]);
+/* 6 */ S.push(['d',`<p class="t h2">Simple, efficient and <b style="color:var(--y)">reader-friendly</b></p><div class="st" id="st"><button class="on" style="--c:#fff"><b>01</b>Design the cards</button><button style="--c:var(--y)"><b>02</b>Add live charts</button><button style="--c:var(--g)"><b>03</b>Host on GitHub</button><button style="--c:var(--b)"><b>04</b>Send in 1 click</button></div><p class="sd" id="sd"></p>`]);
+/* 7 */ S.push(['w',`<p class="t h2" style="text-align:center">Competitive <b>landscape</b></p><div class="tb" id="tb"></div>`]);
+/* 8 */ S.push(['w',`<p class="t h2">Staked <b>value</b></p><p class="sm" style="margin-top:1cqw">Total value staked. Hover for growth vs. the previous point.</p><div class="bars" style="height:44cqh"><div class="bw"><div class="bar" data-h="28" style="background:var(--o)" data-tip="Feb: $100K">$100K</div><div class="bl">FEB</div></div><div class="bw"><div class="bar" data-h="55" style="background:var(--y)" data-tip="May: $980K (9.8x Feb)">$980K</div><div class="bl">MAY</div></div><div class="bw"><div class="bar" data-h="100" style="background:var(--g)" data-tip="Jun: $2.4M (2.4x May)">$2.4M</div><div class="bl">JUN</div></div></div>`]);
+/* 9 */ S.push(['w row',`<p class="t" style="font-size:5.4cqw">Our numbers <b>at a glance</b></p><div class="nm"><button style="background:var(--g)" data-tip="Share of emails opened">Open rate<b data-n="53.06" data-d="2" data-s="%">53.06%</b></button><button style="background:var(--y)" data-tip="Share of emails clicked">Click rate<b data-n="8.72" data-d="2" data-s="%">8.72%</b></button><button style="background:var(--o)" data-tip="Team members">Team<b data-n="3716">3,716</b></button></div>`]);
+/* 10 */ S.push(['d',`<p class="t h2">We're <b>growing</b></p><div class="big gr" style="font-size:16cqw;margin-top:2cqw" data-n="2.4" data-d="1" data-p="$" data-s="M">$2.4M</div><svg class="ch" id="c10" viewBox="0 0 600 100" style="color:#fff;margin-top:1cqw"></svg>`]);
+/* 11 */ S.push(['y',`<p class="t h2" style="text-align:center">Where readers <b>click</b></p><div class="dwrap"><div style="position:relative;display:grid;place-items:center"><svg class="dsvg" id="dn" viewBox="0 0 42 42"></svg><div class="dc" id="dc"><b>100%</b>of clicks</div></div><div class="dl" id="dl"></div></div>`]);
+/* 12 */ S.push(['w',`<p class="t h2" style="text-align:center">How we grow <b>through 2026</b></p><div class="tl" id="tl"><button class="on"><b>Q1</b>Journey emails go live<small>The first journey-based sends replace broadcast.</small></button><button><b>Q3</b>$2.4M staked<small>Staked value reaches $2.4M.</small></button><button><b>Q4</b>Team above 3,700<small>The team grows past 3,700.</small></button></div>`]);
+
+const dots=document.getElementById('dots'),ct=document.getElementById('ct'),prog=document.getElementById('prog');
+S.forEach((s,i)=>{const e=document.createElement('section');e.className='s '+s[0];e.innerHTML=s[1]+(i?'<div class="ft"><span>Newsletter Lab &middot; Issue 02</span><span>'+(i+1)+'</span></div>':'');e.setAttribute('aria-label','Slide '+(i+1));deck.appendChild(e);const d=document.createElement('button');d.className='dot';d.setAttribute('aria-label','Go to slide '+(i+1));d.onclick=()=>go(i);dots.appendChild(d)});
+const sl=[...deck.querySelectorAll('.s')],dt=[...dots.children];
+let cur=-1;
+
+/* tooltip */
+deck.addEventListener('mousemove',e=>{const t=e.target.closest('[data-tip]');if(!t){tip.classList.remove('on');return}const r=deck.getBoundingClientRect();tip.textContent=t.dataset.tip;tip.style.left=(e.clientX-r.left)+'px';tip.style.top=(e.clientY-r.top)+'px';tip.classList.add('on')});
+deck.addEventListener('mouseleave',()=>tip.classList.remove('on'));
+
+/* count-up */
+function count(root){root.querySelectorAll('[data-n]').forEach(el=>{const t=+el.dataset.n,d=+(el.dataset.d||0),s=el.dataset.s||'',p=el.dataset.p||'',st=performance.now();(function f(n){const k=Math.min(1,(n-st)/900),e=1-Math.pow(1-k,3);el.textContent=p+(t*e).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})+s;if(k<1)requestAnimationFrame(f)})(st)})}
+function bars(root,on){root.querySelectorAll('.bar').forEach(b=>b.style.height=on?b.dataset.h+'%':'0')}
+
+/* svg line chart */
+function line(id,labels,series,fmt,ymax){const svg=document.getElementById(id),W=600,H=+svg.viewBox.baseVal.height,pl=34,pb=24,pt=12,iw=W-pl-10,ih=H-pb-pt,n=labels.length;const X=i=>pl+iw*i/(n-1),Y=v=>pt+ih*(1-v/ymax);let h='';
+for(let k=0;k<=2;k++){const v=ymax*k/2;h+=`<line x1="${pl}" x2="${W-10}" y1="${Y(v)}" y2="${Y(v)}" stroke="currentColor" opacity=".15"/><text x="${pl-6}" y="${Y(v)+4}" text-anchor="end">${fmt(v)}</text>`}
+labels.forEach((l,i)=>h+=`<text x="${X(i)}" y="${H-6}" text-anchor="middle">${l}</text>`);
+series.forEach(s=>{const p=s.d.map((v,i)=>X(i)+','+Y(v)).join(' ');if(s.area)h+=`<polygon points="${X(0)},${Y(0)} ${p} ${X(n-1)},${Y(0)}" fill="${s.c}" opacity=".18"/>`;h+=`<polyline points="${p}" fill="none" stroke="${s.c}" stroke-width="${s.w||4}" stroke-linecap="round" stroke-linejoin="round" opacity="${s.o||1}"/>`;
+s.d.forEach((v,i)=>h+=`<circle class="pt" cx="${X(i)}" cy="${Y(v)}" r="6" fill="${s.c}" stroke="#fff" stroke-width="2" data-tip="${s.n}, ${labels[i]}: ${fmt(v)}" opacity="${s.o||1}"/>`)});svg.innerHTML=h}
+line('c4',['Wk 1','Wk 2','Wk 3','Wk 4','Wk 5','Wk 6'],[{n:'Static',c:'#26301a',o:.45,d:[62,41,30,22,16,12]},{n:'Journey',c:'#f47b20',d:[64,58,55,53,52,51]}],v=>Math.round(v)+'%',80);
+line('c10',['Feb','May','Jun'],[{n:'Staked',c:'#4cb96a',area:1,d:[.1,.98,2.4]}],v=>'$'+(+v.toFixed(2))+'M',2.6);
+
+/* slide 3 slider */
+const rg=document.getElementById('rg'),f0=n=>Math.round(n).toLocaleString();
+function upd(){const n=+rg.value;c0.textContent=f0(n);c1.textContent=f0(n*.122);c2.textContent=f0(n*.53)}rg.oninput=upd;upd();
+
+/* pick-one groups */
+function pick(root,fn){const bs=[...root.children];bs.forEach((b,i)=>b.onclick=()=>{bs.forEach(x=>x.classList.remove('on'));b.classList.add('on');fn&&fn(i)})}
+pick(document.getElementById('bx'));pick(document.getElementById('tl'));
+const sd=['Lay out each idea as a single card with one clear message.','Charts respond to hover, toggles and filters.','Publish the page for free on GitHub Pages.','Send the link in one click from your email tool.'];
+pick(document.getElementById('st'),i=>document.getElementById('sd').textContent=sd[i]);document.getElementById('sd').textContent=sd[0];
+
+/* comparison table */
+const rows=[['Hover insights',1,0,0],['Toggles and filters',1,0,0],['Animation',1,0,1],['Mobile ready',1,1,1],['Click tracking',1,1,0]];
+let h='<span></span><i class="u hd" data-c="0">US</i><i class="hd" data-c="1">STATIC</i><i class="hd" data-c="2">BASIC</i>';
+rows.forEach(r=>{h+='<span>'+r[0]+'</span>'+r.slice(1).map((v,i)=>`<i class="${i?'':'u'}" data-c="${i}" data-tip="${['Us','Static','Basic'][i]}: ${v?'yes':'no'} for ${r[0].toLowerCase()}">${v?'\u25CF':'\u25CB'}</i>`).join('')});
+const tb=document.getElementById('tb');tb.innerHTML=h;
+tb.addEventListener('mouseover',e=>{const c=e.target.dataset.c;tb.querySelectorAll('i').forEach(i=>i.classList.toggle('hl',c!=null&&i.dataset.c===c))});
+tb.addEventListener('mouseleave',()=>tb.querySelectorAll('i').forEach(i=>i.classList.remove('hl')));
+
+/* donut */
+const dd=[['Charts',50,'#3b82f6'],['Buttons',25,'#f47b20'],['Links',15,'#4cb96a'],['Social',10,'#8b5cf6']],dn=document.getElementById('dn'),dl=document.getElementById('dl'),dc=document.getElementById('dc');
+let off=0,dh='';dd.forEach((d,i)=>{dh+=`<circle data-i="${i}" cx="21" cy="21" r="15.9155" stroke="${d[2]}" stroke-dasharray="${d[1]-.6} ${100-d[1]+.6}" stroke-dashoffset="${-off}" data-tip="${d[0]}: ${d[1]}%"/>`;off+=d[1];dl.insertAdjacentHTML('beforeend',`<button data-i="${i}" style="--c:${d[2]}"><i></i>${d[0]}<em>${d[1]}%</em></button>`)});dn.innerHTML=dh;
+function hi(i){dn.classList.toggle('dim',i!=null);dn.querySelectorAll('circle').forEach((c,k)=>c.classList.toggle('on',k===i));dl.querySelectorAll('button').forEach((c,k)=>c.classList.toggle('on',k===i));dc.innerHTML=i==null?'<b>100%</b>of clicks':`<b>${dd[i][1]}%</b>${dd[i][0]}`}
+[dn,dl].forEach(el=>{el.addEventListener('mouseover',e=>{const t=e.target.closest('[data-i]');if(t)hi(+t.dataset.i)});el.addEventListener('mouseleave',()=>hi(null))});
+
+/* navigation */
+function go(i){i=Math.max(0,Math.min(S.length-1,i));if(i===cur)return;cur=i;sl.forEach((s,k)=>{s.classList.toggle('on',k===i);s.classList.toggle('past',k<i)});sl.forEach((s,k)=>bars(s,k===i));dt.forEach((d,k)=>d.classList.toggle('on',k===i));ct.textContent=(i+1)+' / '+S.length;prog.style.width=((i+1)/S.length*100)+'%';pv.disabled=i===0;nx.disabled=i===S.length-1;tip.classList.remove('on');count(sl[i]);history.replaceState(null,'','#'+(i+1))}
+pv.onclick=()=>go(cur-1);nx.onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{const k=e.key;if(k==='ArrowRight'||k==='PageDown'||(k===' '&&e.target.tagName!=='BUTTON'))go(cur+1);else if(k==='ArrowLeft'||k==='PageUp')go(cur-1);else if(k==='Home')go(0);else if(k==='End')go(S.length-1);if(k===' '||k.startsWith('Arrow'))if(e.target.tagName!=='INPUT')e.preventDefault()});
+let tx=null;deck.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});deck.addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(cur+(dx<0?1:-1));tx=null});
+go((parseInt(location.hash.slice(1))||1)-1);
+</script>
+</body>
+</html>
