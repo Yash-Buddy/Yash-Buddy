@@ -4,11 +4,11 @@ I work across visual design, information design, data visualization, and
 creative coding, turning complex information into clear, interactive
 visual experiences.
 
-<img src="assets/airport-header.svg" alt="Departures board: Design, React, Data Visualization, Interactive Newsletters, Creative Coding" width="100%">
+<img src="airport-header.svg" alt="Departures board: Design, React, Data Visualization, Interactive Newsletters, Creative Coding" width="100%">
 
-<img src="assets/board-design.svg" alt="Design: Presentation Design, Information Design, Data Visualization, UI / UX" width="100%">
+<img src="board-design.svg" alt="Design: Presentation Design, Information Design, Data Visualization, UI / UX" width="100%">
 
-<img src="assets/board-code.svg" alt="Code: React, JavaScript, D3.js, Canvas / WebGL, Creative Coding" width="100%">
+<img src="board-code.svg" alt="Code: React, JavaScript, D3.js, Canvas / WebGL, Creative Coding" width="100%">
 
 <a href="https://visual-instrument-portfolio.vercel.app"><img src="assets/board-portfolio.svg" alt="Portfolio: Visual Instrument Portfolio" width="100%"></a>
 
