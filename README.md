@@ -24,4 +24,28 @@ visual experiences.
 
 ### FIND OUT MORE
 
-[Portfolio](https://visual-instrument-portfolio.vercel.app) · [LinkedIn]( linkedin.com/in/yash-726208145) · [Email]( mailto:yashdesign08@outlook.com )
+[Portfolio](https://visual-instrument-portfolio.vercel.app) · 
+## FIND OUT MORE
+
+<table>
+<tr>
+<td><img src="https://img.shields.io/badge/-Portfolio-26301a?style=flat-square&logo=vercel&logoColor=white" alt="Portfolio"></td>
+<td><a href="https://visual-instrument-portfolio.vercel.app/">visual-instrument-portfolio.vercel.app</a></td>
+</tr>
+<tr>
+<td><img src="https://img.shields.io/badge/-Behance-1769FF?style=flat-square&logo=behance&logoColor=white" alt="Behance"></td>
+<td><a href="https://www.behance.net/yashyadav1">behance.net/yashyadav1</a></td>
+</tr>
+<tr>
+<td><img src="https://img.shields.io/badge/-LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white" alt="LinkedIn"></td>
+<td><a href="https://www.linkedin.com/in/yash-726208145">linkedin.com/in/yash-726208145</a></td>
+</tr>
+<tr>
+<td><img src="https://img.shields.io/badge/-Email-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email"></td>
+<td><a href="mailto:yashsakuntalayadav@gmail.com">yashsakuntalayadav@gmail.com</a></td>
+</tr>
+<tr>
+<td><img src="https://img.shields.io/badge/-Location-4c8f3f?style=flat-square&logo=googlemaps&logoColor=white" alt="Location"></td>
+<td>Bengaluru, India</td>
+</tr>
+</table>
