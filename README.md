@@ -22,11 +22,6 @@ visual experiences.
 
 ---
 
-### FIND OUT MORE
-
-[Portfolio](https://visual-instrument-portfolio.vercel.app) · 
-## FIND OUT MORE
-
 ## FIND OUT MORE
 
 <a href="https://visual-instrument-portfolio.vercel.app/"><img src="contact-portfolio.svg" alt="Portfolio" width="49%"></a>
