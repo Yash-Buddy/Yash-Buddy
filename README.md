@@ -35,4 +35,3 @@ A living particle field that responds to pointer movement and scroll. Click the 
 <a href="https://visual-instrument-portfolio.vercel.app"><img src="assets/link-portfolio.svg" alt="Portfolio" width="100%"></a>
 <a href="https://www.linkedin.com/in/yash-726208145"><img src="assets/link-linkedin.svg" alt="LinkedIn" width="100%"></a>
 <a href="mailto:yashdesign08@outlook.com"><img src="assets/link-email.svg" alt="Email" width="100%"></a>
-
