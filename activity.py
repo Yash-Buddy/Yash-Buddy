@@ -1,70 +1,57 @@
-"""Builds assets/activity.svg (departures-board style GitHub activity).
-Usage: GH_TOKEN=... python activity.py [username]   (no token -> '---' placeholders)"""
-import json, os, re, sys, urllib.request
+"""Builds assets/activity.svg: GitHub-style contribution graph on the board card.
+Usage: python3 activity.py [username]   (no token needed; reads the public graph)"""
+import datetime as dt, os, random, re, sys, urllib.request
 
 USER = sys.argv[1] if len(sys.argv) > 1 else "Yash-Buddy"
-F = {}
-def g(ch, *rows): F[ch] = rows
-g("A","01110","10001","10001","11111","10001","10001","10001"); g("B","11110","10001","10001","11110","10001","10001","11110")
-g("C","01110","10001","10000","10000","10000","10001","01110"); g("D","11110","10001","10001","10001","10001","10001","11110")
-g("E","11111","10000","10000","11110","10000","10000","11111"); g("F","11111","10000","10000","11110","10000","10000","10000")
-g("G","01110","10001","10000","10111","10001","10001","01111"); g("H","10001","10001","10001","11111","10001","10001","10001")
-g("I","01110","00100","00100","00100","00100","00100","01110"); g("J","00111","00010","00010","00010","00010","10010","01100")
-g("K","10001","10010","10100","11000","10100","10010","10001"); g("L","10000","10000","10000","10000","10000","10000","11111")
-g("M","10001","11011","10101","10101","10001","10001","10001"); g("N","10001","11001","10101","10011","10001","10001","10001")
-g("O","01110","10001","10001","10001","10001","10001","01110"); g("P","11110","10001","10001","11110","10000","10000","10000")
-g("Q","01110","10001","10001","10001","10101","10010","01101"); g("R","11110","10001","10001","11110","10100","10010","10001")
-g("S","01111","10000","10000","01110","00001","00001","11110"); g("T","11111","00100","00100","00100","00100","00100","00100")
-g("U","10001","10001","10001","10001","10001","10001","01110"); g("V","10001","10001","10001","10001","10001","01010","00100")
-g("W","10001","10001","10001","10101","10101","11011","10001"); g("X","10001","10001","01010","00100","01010","10001","10001")
-g("Y","10001","10001","01010","00100","00100","00100","00100"); g("Z","11111","00001","00010","00100","01000","10000","11111")
-g("0","01110","10001","10011","10101","11001","10001","01110"); g("1","00100","01100","00100","00100","00100","00100","01110")
-g("2","01110","10001","00001","00010","00100","01000","11111"); g("3","11110","00001","00001","01110","00001","00001","11110")
-g("4","00010","00110","01010","10010","11111","00010","00010"); g("5","11111","10000","11110","00001","00001","10001","01110")
-g("6","00110","01000","10000","11110","10001","10001","01110"); g("7","11111","00001","00010","00100","01000","01000","01000")
-g("8","01110","10001","10001","01110","10001","10001","01110"); g("9","01110","10001","10001","01111","00001","00010","01100")
-g("-","00000","00000","00000","11111","00000","00000","00000"); g(" ","00000"*1,*["00000"]*6)
+levels, total = {}, None
+if os.environ.get("DEMO"):
+    random.seed(1)
+    levels = {(dt.date.today() - dt.timedelta(d)).isoformat(): random.choice([0, 0, 0, 1, 2, 3, 4]) for d in range(371)}
+else:
+    try:
+        html = urllib.request.urlopen(urllib.request.Request(
+            f"https://github.com/users/{USER}/contributions", headers={"User-Agent": "Mozilla/5.0"})).read().decode()
+        for tag in re.findall(r"<td[^>]*>", html):
+            d, l = re.search(r'data-date="([^"]+)"', tag), re.search(r'data-level="(\d)"', tag)
+            if d and l:
+                levels[d.group(1)] = int(l.group(1))
+        m = re.search(r"([\d,]+)\s+contributions\s+in the last year", html)
+        total = m.group(1) if m else None
+    except Exception as e:
+        print("fetch failed:", e)
 
-def dots(text, x, y):
-    d = []
-    for i, ch in enumerate(text.upper()):
-        for r, row in enumerate(F.get(ch, F[" "])):
-            for c, bit in enumerate(row):
-                if bit == "1":
-                    d.append(f"M{x + i*24 + c*4} {y + r*4}h0")
-    return "".join(d)
+today = dt.date.today()
+start = today - dt.timedelta(days=364)
+start -= dt.timedelta(days=(start.weekday() + 1) % 7)          # back to Sunday
+weeks = (today - start).days // 7 + 1
+COL = ["#1f1f22", "#0e4429", "#006d32", "#26a641", "#39d353"]
+X0, Y0, P, S = 64, 62, 15, 12
 
-def stats():
-    tok = os.environ.get("GH_TOKEN")
-    if not tok:
-        return ["---"] * 4
-    q = '{user(login:"%s"){contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{contributionCount}}}}}}' % USER
-    req = urllib.request.Request("https://api.github.com/graphql", json.dumps({"query": q}).encode(),
-                                 {"Authorization": f"bearer {tok}", "Content-Type": "application/json"})
-    cal = json.load(urllib.request.urlopen(req))["data"]["user"]["contributionsCollection"]["contributionCalendar"]
-    days = [d["contributionCount"] for w in cal["weeks"] for d in w["contributionDays"]]
-    week = sum(d["contributionCount"] for d in cal["weeks"][-1]["contributionDays"])
-    best = run = 0
-    for n in days:
-        run = run + 1 if n else 0
-        best = max(best, run)
-    return [str(cal["totalContributions"]), str(week), f"{best} DAYS", str(sum(1 for n in days if n))]
+cells, mlist, last = "", [], None
+for w in range(weeks):
+    for r in range(7):
+        day = start + dt.timedelta(days=w * 7 + r)
+        if day > today:
+            continue
+        cells += f'<rect x="{X0 + w*P}" y="{Y0 + r*P}" width="{S}" height="{S}" rx="2.5" fill="{COL[levels.get(day.isoformat(), 0)]}"/>'
+    sun = start + dt.timedelta(days=w * 7)
+    if sun.month != last and (w == 0 or sun.day <= 14):
+        mlist.append((X0 + w * P, sun.strftime("%b")))
+        last = sun.month
+if len(mlist) > 1 and mlist[1][0] - mlist[0][0] < 45:
+    mlist.pop(0)
+months = "".join(f'<text class="m" x="{x}" y="50">{n}</text>' for x, n in mlist)
+days_lbl = "".join(f'<text class="m" x="28" y="{Y0 + r*P + 10}">{n}</text>' for r, n in ((1, "Mon"), (3, "Wed"), (5, "Fri")))
+legend = "".join(f'<rect x="{770 + i*17}" y="{Y0 + 7*P + 14}" width="{S}" height="{S}" rx="2.5" fill="{c}"/>' for i, c in enumerate(COL))
+summary = f"{total} contributions in the last year" if total else "Contributions in the last year"
 
 tpl = open("assets/board-code.svg").read()
-head = tpl[:tpl.index('<rect width="900"')]          # svg tag + style + defs
-labels = ["LAST 12 MONTHS", "THIS WEEK", "LONGEST STREAK", "ACTIVE DAYS"]
-vals = stats()
-rows = ""
-for i, (lab, val) in enumerate(zip(labels, vals)):
-    y = 70 + i * 36
-    first = i == 0
-    cls, col = ("as", "#3d7bff") if first else ("", "#f2f2f2")
-    p = lambda k, t, x, c=col, cl=cls: (f'<path class="{cl}" stroke="{c}" stroke-width="3.2" stroke-linecap="round" fill="none" d="{dots(t, x, y)}"/>')
-    rows += (f'<g opacity="0"><animate attributeName="opacity" from="0" to="1" dur=".4s" begin="{i*0.15:.2f}s" fill="freeze"/>'
-             + p(0, f"A0{i+1}", 30) + p(0, lab, 194) + p(0, val, 674, "#ffb020", "bk" if first else "") + "</g>")
-svg = (head.replace(re.search(r'viewBox="[^"]*"', head).group(0), 'viewBox="0 0 900 236"').replace('aria-label="Code skills board"', 'aria-label="GitHub activity board"')
-       + '<rect width="900" height="236" rx="14" fill="#0e0e0f"/>'
-       + '<text class="h" x="28" y="52">Gate</text><text class="h" x="192" y="52">Activity</text><text class="h g" x="672" y="52">Count</text>'
-       + '<rect x="28" y="64" width="844" height="152" fill="url(#p)"/>' + rows + "</svg>")
+head = tpl[:tpl.index('<rect width="900"')]
+head = re.sub(r'viewBox="[^"]*"', 'viewBox="0 0 900 214"', head, 1).replace("Code skills board", "GitHub activity graph")
+head = head.replace("</style>", ".m{font:500 12px 'Helvetica Neue',Arial,sans-serif;fill:#7a7a7f}.s{font:600 14px 'Helvetica Neue',Arial,sans-serif;fill:#fff}</style>", 1)
+svg = (head + '<rect width="900" height="214" rx="14" fill="#0e0e0f"/>' + months + days_lbl + cells
+       + f'<text class="s" x="28" y="{Y0 + 7*P + 24}">{summary}</text>'
+       + f'<text class="m" x="730" y="{Y0 + 7*P + 24}" text-anchor="end">Less</text>' + legend
+       + f'<text class="m" x="{770 + 5*17 + 4}" y="{Y0 + 7*P + 24}">More</text></svg>')
 open("assets/activity.svg", "w").write(svg)
-print("wrote assets/activity.svg", vals)
+print("wrote assets/activity.svg", "cells:", len(levels), "total:", total)
