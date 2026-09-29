@@ -2,19 +2,13 @@
 
 I work across visual design, information design, data visualization, and creative coding, turning complex information into clear, interactive visual experiences.
 
-<br>
-
 <img src="assets/heading-design.svg" alt="Design" width="100%">
 
-<img src="assets/board-design.svg" alt="Design: Presentation Design, Information Design, Data Visualization, UI / UX" width="100%">
-
-<br>
+<img src="assets/board-design.svg" alt="Design skills board" width="100%">
 
 <img src="assets/heading-code.svg" alt="Code" width="100%">
 
-<img src="assets/board-code.svg" alt="Code: React, JavaScript, D3.js, Canvas / WebGL, Creative Coding" width="100%">
-
-<br>
+<img src="assets/board-code.svg" alt="Code skills board" width="100%">
 
 <img src="assets/heading-creative-coder.svg" alt="Creative Coder" width="100%">
 
@@ -22,13 +16,9 @@ A living particle field that responds to pointer movement and scroll. Click the 
 
 <a href="https://visual-instrument-portfolio.vercel.app"><img src="assets/board-portfolio.svg" alt="Portfolio: Visual Instrument Portfolio" width="100%"></a>
 
-<br>
-
 <img src="assets/heading-activity.svg" alt="Activity" width="100%">
 
-<img src="assets/heatmap.svg" alt="GitHub activity heatmap shown as a departures board" width="100%">
-
-<br>
+<img src="assets/activity.svg" alt="GitHub activity board" width="100%">
 
 <img src="assets/heading-connect.svg" alt="Connect" width="100%">
 
